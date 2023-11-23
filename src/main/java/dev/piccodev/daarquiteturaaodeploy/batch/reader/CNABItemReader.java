@@ -18,9 +18,6 @@ public class CNABItemReader {
     @Bean
     public FlatFileItemReader<TransacaoCNAB> reader(){
 
-        System.out.println("Entrou!");
-
-        try {
             return new FlatFileItemReaderBuilder<TransacaoCNAB>()
                     .name("CNABItemReader")
                     .resource(new FileSystemResource("/home/rafael/Desktop/codes/courses/youtube/giuliana-bezerra/daarquiteturaaodeploy/src/main/resources/files/CNAB.txt"))
@@ -44,10 +41,5 @@ public class CNABItemReader {
                             "nomeDaLoja") //In this way, the first character of the file will be mapped to the "tipo" attribute, the second to the "data" attribute, and so on.
                     .targetType(TransacaoCNAB.class) //The "targetType" method will define the type of the object that will be returned by the reader.
                     .build();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 }
