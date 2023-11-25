@@ -5,7 +5,9 @@ import dev.piccodev.daarquiteturaaodeploy.domain.TransacaoCNAB;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.launch.support.TaskExecutorJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
@@ -13,6 +15,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
@@ -53,5 +56,21 @@ public class BatchConfig {
                 .processor(processor)
                 .writer(writer)
                 .build();
+    }
+
+    //By default, Spring Batch will run the jobs synchronously. This means that the job will run in the same thread as the caller.
+    //If we want to run the job asynchronously, we need to create a JobLauncher bean and set a TaskExecutor to it.
+    //The TaskExecutor will be responsible for running the job in a different thread.
+
+    //Basically, we are configuring the job launcher that will be injected by Spring Boot.
+    @Bean
+    public JobLauncher jobLauncherAsync(JobRepository jobRepository) throws Exception {
+
+        var jobLauncher = new TaskExecutorJobLauncher();
+        jobLauncher.setJobRepository(jobRepository);
+        jobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor());
+        jobLauncher.afterPropertiesSet();
+
+        return jobLauncher;
     }
 }
