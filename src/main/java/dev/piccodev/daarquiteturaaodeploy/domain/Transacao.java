@@ -1,14 +1,15 @@
 package dev.piccodev.daarquiteturaaodeploy.domain;
 
+import org.springframework.data.annotation.Id;
+
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.Date;
 
-public record Transacao(Long id,
+public record Transacao(@Id Long id,
                         Integer tipo,
                         LocalDate data,
                         BigDecimal valor,
