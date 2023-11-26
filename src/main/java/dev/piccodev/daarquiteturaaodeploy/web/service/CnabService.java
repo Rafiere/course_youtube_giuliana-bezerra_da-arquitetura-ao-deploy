@@ -45,7 +45,7 @@ public class CnabService {
         //Below, we are creating the job parameters.
         var jobParameters = new JobParametersBuilder()
                 .addJobParameter("cnab", file.getOriginalFilename(), String.class, true) //The "true" flag means that the parameter is used as a key to avoid duplicate executions of this job.
-                .addJobParameter("cnabFile", "file:" + targetLocation.toString(), String.class)
+                .addJobParameter("cnabFile", "file:" + targetLocation.toString(), String.class, false) //Only the "cnab" parameter will be used as a key to avoid duplicate executions of this job. The "cnabFile" parameter will not be used as a key.
                 .toJobParameters();
 
         //Below, we are executing the job asynchronously.
